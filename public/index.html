@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homonormative Chess</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Home Screen -->
+    <div id="home-screen" class="screen active">
+      <div class="home-container">
+        <header class="home-header">
+          <h1 class="title">Homonormative Chess</h1>
+          <p class="subtitle">Where every ruler has an equal</p>
+        </header>
+        
+        <main class="variant-selection">
+          <h2 class="choose-text">Choose Your Sexuality</h2>
+          <div class="variant-buttons">
+            <button class="variant-btn" data-variant="double-kings">
+              <span class="variant-icon">♚♚</span>
+              <span class="variant-name">Double Kings</span>
+              <span class="variant-desc">♜♞♝♚♚♝♞♜</span>
+            </button>
+            <button class="variant-btn" data-variant="double-queens">
+              <span class="variant-icon">♛♛</span>
+              <span class="variant-name">Double Queens</span>
+              <span class="variant-desc">♜♞♝♛♛♝♞♜</span>
+            </button>
+          </div>
+        </main>
+        
+        <footer class="home-footer">
+          <p>A fight to the death on who can be the strongest gay</p>
+        </footer>
+      </div>
+      
+      <div class="decorative-pieces">
+        <span class="deco-piece deco-1">♜</span>
+        <span class="deco-piece deco-2">♞</span>
+        <span class="deco-piece deco-3">♝</span>
+        <span class="deco-piece deco-4">♟</span>
+      </div>
+    </div>
+    
+    <!-- Game Setup Screen -->
+    <div id="setup-screen" class="screen">
+      <div class="setup-container">
+        <button class="back-btn" id="setup-back-btn">← Back</button>
+        
+        <header class="setup-header">
+          <h1 class="setup-title">Game Setup</h1>
+          <p class="setup-variant-name" id="setup-variant-name"></p>
+        </header>
+        
+        <div class="setup-options">
+          <div class="option-group">
+            <h3>Play Mode</h3>
+            <div class="mode-buttons">
+              <button class="mode-btn active" data-mode="online">
+                <span class="mode-icon">🌐</span>
+                <span>Online</span>
+              </button>
+              <button class="mode-btn" data-mode="local">
+                <span class="mode-icon">🎯</span>
+                <span>Over the Board</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="option-group">
+            <h3>Time Control</h3>
+            <div class="time-presets">
+              <div class="preset-category">
+                <span class="category-label">Rapid</span>
+                <div class="preset-buttons">
+                  <button class="preset-btn" data-time="30" data-increment="0">30 min</button>
+                  <button class="preset-btn" data-time="15" data-increment="10">15 | 10</button>
+                  <button class="preset-btn active" data-time="10" data-increment="0">10 min</button>
+                  <button class="preset-btn" data-time="5" data-increment="0">5 min</button>
+                </div>
+              </div>
+              <div class="preset-category">
+                <span class="category-label">Blitz</span>
+                <div class="preset-buttons">
+                  <button class="preset-btn" data-time="3" data-increment="2">3 | 2</button>
+                  <button class="preset-btn" data-time="3" data-increment="0">3 min</button>
+                </div>
+              </div>
+              <div class="preset-category">
+                <span class="category-label">Bullet</span>
+                <div class="preset-buttons">
+                  <button class="preset-btn" data-time="2" data-increment="1">2 | 1</button>
+                  <button class="preset-btn" data-time="1" data-increment="0">1 min</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="option-group online-only">
+            <h3>Game Code</h3>
+            <div class="code-options">
+              <button class="code-btn active" id="create-game-btn">Create New Game</button>
+              <div class="code-divider">or</div>
+              <div class="join-game-section">
+                <input type="text" id="game-code-input" placeholder="Enter code" maxlength="6" autocomplete="off">
+                <button class="code-btn" id="join-game-btn">Join Game</button>
+              </div>
+            </div>
+          </div>
+          
+          <button class="start-btn" id="start-game-btn">Start Game</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Waiting Room Screen -->
+    <div id="waiting-screen" class="screen">
+      <div class="waiting-container">
+        <h1 class="waiting-title">Waiting for Opponent</h1>
+        <div class="game-code-display">
+          <p>Share this code with your friend:</p>
+          <div class="code-box">
+            <span id="display-game-code"></span>
+            <button class="copy-btn" id="copy-code-btn" title="Copy code">📋</button>
+          </div>
+        </div>
+        <div class="waiting-animation">
+          <span class="waiting-piece">♔</span>
+          <span class="waiting-dots">...</span>
+          <span class="waiting-piece">♚</span>
+        </div>
+        <button class="cancel-btn" id="cancel-wait-btn">Cancel</button>
+      </div>
+    </div>
+    
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+      <div class="game-container">
+        <div class="game-sidebar left-sidebar">
+          <div class="player-info opponent-info">
+            <div class="player-name">
+              <span class="player-color-indicator opponent-color"></span>
+              <span id="opponent-name">Opponent</span>
+            </div>
+            <div class="player-timer" id="opponent-timer">10:00</div>
+          </div>
+          
+          <div class="captured-pieces" id="opponent-captured"></div>
+        </div>
+        
+        <div class="board-section">
+          <div class="board-container">
+            <div class="board-coordinates top">
+              <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span>
+            </div>
+            <div class="board-with-coords">
+              <div class="board-coordinates left">
+                <span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span>
+              </div>
+              <div id="chess-board" class="chess-board"></div>
+              <div class="board-coordinates right">
+                <span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span>
+              </div>
+            </div>
+            <div class="board-coordinates bottom">
+              <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span>
+            </div>
+          </div>
+          
+          <div class="game-status" id="game-status"></div>
+        </div>
+        
+        <div class="game-sidebar right-sidebar">
+          <div class="player-info player-info-self">
+            <div class="player-name">
+              <span class="player-color-indicator self-color"></span>
+              <span id="player-name">You</span>
+            </div>
+            <div class="player-timer" id="player-timer">10:00</div>
+          </div>
+          
+          <div class="captured-pieces" id="player-captured"></div>
+          
+          <div class="move-list-container">
+            <h3>Moves</h3>
+            <div class="move-list" id="move-list"></div>
+          </div>
+          
+          <div class="game-controls">
+            <button class="control-btn" id="offer-draw-btn" title="Offer Draw">½</button>
+            <button class="control-btn" id="takeback-btn" title="Request Takeback">↩</button>
+            <button class="control-btn resign-btn" id="resign-btn" title="Resign">🏳</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Modals -->
+      <div class="modal" id="promotion-modal">
+        <div class="modal-content promotion-content">
+          <h3>Promote Pawn</h3>
+          <div class="promotion-options" id="promotion-options"></div>
+        </div>
+      </div>
+      
+      <div class="modal" id="offer-modal">
+        <div class="modal-content">
+          <h3 id="offer-title"></h3>
+          <p id="offer-message"></p>
+          <div class="modal-buttons">
+            <button class="modal-btn accept-btn" id="accept-offer-btn">Accept</button>
+            <button class="modal-btn decline-btn" id="decline-offer-btn">Decline</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal" id="game-over-modal">
+        <div class="modal-content">
+          <h3 id="game-over-title"></h3>
+          <p id="game-over-message"></p>
+          <div class="modal-buttons">
+            <button class="modal-btn" id="new-game-btn">New Game</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/chess.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
+
