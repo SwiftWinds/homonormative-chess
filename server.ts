@@ -322,6 +322,8 @@ const server = serve({
               type: "gameStarted",
               board: game.board,
               currentTurn: game.currentTurn,
+              whiteTime: game.whiteTime,
+              blackTime: game.blackTime,
             });
             break;
           }

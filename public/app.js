@@ -246,6 +246,8 @@ class ChessApp {
         break;
         
       case 'gameStarted':
+        this.whiteTime = data.whiteTime;
+        this.blackTime = data.blackTime;
         this.initGame(data.board);
         this.startTimers();
         break;
