@@ -45,11 +45,13 @@ class ChessApp {
   // ============================================
   
   bindHomeScreen() {
-    document.querySelectorAll('.variant-btn').forEach(btn => {
+    document.querySelectorAll('.variant-card').forEach(btn => {
       btn.addEventListener('click', () => {
         this.variant = btn.dataset.variant;
         document.getElementById('setup-variant-name').textContent = 
-          this.variant === 'double-kings' ? '♚♚ Double Kings' : '♛♛ Double Queens';
+          this.variant === 'double-kings' ? 'Double Kings Chess' : 'Double Queens Chess';
+        document.getElementById('game-variant-badge').textContent = 
+          this.variant === 'double-kings' ? 'Double Kings' : 'Double Queens';
         this.showScreen('setup-screen');
       });
     });
@@ -93,20 +95,15 @@ class ChessApp {
       });
     });
     
-    // Create/Join game toggle
+    // Create game button - directly creates a game
     document.getElementById('create-game-btn').addEventListener('click', () => {
-      document.getElementById('create-game-btn').classList.add('active');
-      document.getElementById('join-game-btn').classList.remove('active');
+      this.createGame();
     });
     
     // Game code input
     const codeInput = document.getElementById('game-code-input');
     codeInput.addEventListener('input', () => {
       codeInput.value = codeInput.value.toUpperCase();
-      if (codeInput.value.length > 0) {
-        document.getElementById('create-game-btn').classList.remove('active');
-        document.getElementById('join-game-btn').classList.add('active');
-      }
     });
     
     // Join game button
@@ -114,22 +111,30 @@ class ChessApp {
       const code = codeInput.value.trim();
       if (code.length === 6) {
         this.joinGame(code);
+      } else {
+        this.showToast('Please enter a valid 6-character game code', 'error');
       }
     });
     
-    // Start game button
+    // Start game button (for local mode)
     document.getElementById('start-game-btn').addEventListener('click', () => {
       if (this.mode === 'local') {
         this.startLocalGame();
-      } else {
-        const code = codeInput.value.trim();
-        if (code.length === 6) {
-          this.joinGame(code);
-        } else {
-          this.createGame();
-        }
       }
     });
+  }
+  
+  showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.animation = 'slideIn 0.3s ease-out reverse';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
   }
   
   // ============================================
@@ -140,8 +145,8 @@ class ChessApp {
     document.getElementById('copy-code-btn').addEventListener('click', () => {
       navigator.clipboard.writeText(this.gameCode);
       const btn = document.getElementById('copy-code-btn');
-      btn.textContent = '✓';
-      setTimeout(() => btn.textContent = '📋', 1500);
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 1500);
     });
     
     document.getElementById('cancel-wait-btn').addEventListener('click', () => {
@@ -355,6 +360,18 @@ class ChessApp {
     this.whiteTime = this.timeControl.time * 60 * 1000;
     this.blackTime = this.timeControl.time * 60 * 1000;
     
+    // Update variant badge
+    document.getElementById('game-variant-badge').textContent = 
+      this.variant === 'double-kings' ? 'Double Kings' : 'Double Queens';
+    
+    // Update player info for local mode
+    document.querySelector('.self-color').textContent = 'White';
+    document.querySelector('.opponent-color').textContent = 'Black';
+    document.getElementById('player-name').textContent = 'White';
+    document.getElementById('opponent-name').textContent = 'Black';
+    document.querySelector('.self-avatar').textContent = '♙';
+    document.querySelector('.opponent-avatar').textContent = '♟';
+    
     this.showScreen('game-screen');
     this.setupBoard();
     this.renderBoard();
@@ -369,6 +386,10 @@ class ChessApp {
       this.game.board = board;
     }
     
+    // Update variant badge
+    document.getElementById('game-variant-badge').textContent = 
+      this.variant === 'double-kings' ? 'Double Kings' : 'Double Queens';
+    
     this.showScreen('game-screen');
     this.setupBoard();
     this.renderBoard();
@@ -380,19 +401,21 @@ class ChessApp {
   }
   
   updatePlayerIndicators() {
-    const selfIndicator = document.querySelector('.self-color');
-    const opponentIndicator = document.querySelector('.opponent-color');
+    const selfColor = document.querySelector('.self-color');
+    const opponentColor = document.querySelector('.opponent-color');
+    const selfAvatar = document.querySelector('.self-avatar');
+    const opponentAvatar = document.querySelector('.opponent-avatar');
     
     if (this.playerColor === 'white') {
-      selfIndicator.classList.add('white');
-      selfIndicator.classList.remove('black');
-      opponentIndicator.classList.add('black');
-      opponentIndicator.classList.remove('white');
+      selfColor.textContent = 'White';
+      opponentColor.textContent = 'Black';
+      selfAvatar.textContent = '♙';
+      opponentAvatar.textContent = '♟';
     } else {
-      selfIndicator.classList.add('black');
-      selfIndicator.classList.remove('white');
-      opponentIndicator.classList.add('white');
-      opponentIndicator.classList.remove('black');
+      selfColor.textContent = 'Black';
+      opponentColor.textContent = 'White';
+      selfAvatar.textContent = '♟';
+      opponentAvatar.textContent = '♙';
     }
   }
   
