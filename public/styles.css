@@ -198,6 +198,14 @@ h1, h2, h3 {
   opacity: 0.7;
 }
 
+.landing-footer {
+  margin-top: 3rem;
+  font-size: 1.1rem;
+  color: var(--cream-dark);
+  font-style: italic;
+  opacity: 0.7;
+}
+
 /* Lobby/Setup Screen */
 .lobby-container {
   max-width: 600px;
